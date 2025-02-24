@@ -18,10 +18,16 @@ function addJournalSearch() {
         searchBox.addEventListener("keyup", function() {
             let filter = this.value.toLowerCase();
             let entries = document.querySelectorAll("#journal .content .journalitem");
+            let folders = document.querySelectorAll("#journal .content .dd-folder");
 
             entries.forEach(entry => {
                 let text = entry.textContent.toLowerCase();
                 entry.style.display = text.includes(filter) ? "" : "none";
+            });
+
+            folders.forEach(folder => {
+                let visibleEntries = folder.querySelectorAll(".journalitem:not([style*='display: none'])");
+                folder.style.display = visibleEntries.length > 0 ? "" : "none";
             });
         });
 
