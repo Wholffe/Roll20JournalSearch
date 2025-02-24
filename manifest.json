@@ -7,11 +7,12 @@
     {
       "matches": ["*://app.roll20.net/editor/*"],
       "js": ["content/content.js"],
-      "run_at": "document_end"
+      "run_at": "document_idle"
     }
   ],
   "icons": {
     "128": "icons/icon.png"
   },
-  "permissions": []
+  "permissions": ["scripting"],
+  "host_permissions": ["*://app.roll20.net/*"]
 }
