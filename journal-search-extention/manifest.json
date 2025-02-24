@@ -1,0 +1,18 @@
+{
+    "manifest_version": 3,
+    "name": "Roll20 Journal Search",
+    "version": "1.0",
+    "description": "Fügt eine Suchleiste in das Roll20-Journal ein, um Notizen schneller zu finden.",
+    "content_scripts": [
+      {
+        "matches": ["*://app.roll20.net/editor/*"],
+        "js": ["content.js"],
+        "run_at": "document_end"
+      }
+    ],
+    "icons": {
+      "128": "icon.png"
+    },
+    "permissions": []
+}
+  
