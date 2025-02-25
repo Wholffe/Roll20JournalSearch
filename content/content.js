@@ -17,9 +17,9 @@ function createSearchBox() {
     searchBox.type = "text";
     searchBox.id = "journalSearch";
     searchBox.placeholder = "Search for item...";
-    searchBox.style.width = "100%";
+    searchBox.style.width = "95%";
     searchBox.style.padding = "5px";
-    searchBox.style.margin = "5px 0";
+    searchBox.style.margin = "5px auto";
     searchBox.style.display = "block";
     searchBox.style.border = "1px solid #ccc";
     searchBox.style.borderRadius = "4px";
