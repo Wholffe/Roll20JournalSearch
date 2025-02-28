@@ -55,50 +55,47 @@ function createModeSwitch() {
 
 let searchByFolder = false;
 
-function checkFolderMatch(folder, filter) {
-    const folderTitle = folder.querySelector(".folder-title").textContent.toLowerCase();
-    const subfolders = folder.querySelectorAll(".dd-folder");
-    const journalItems = folder.querySelectorAll(".journalitem");
+function searchFolders(filter) {
+    const folders = document.querySelectorAll("#journal .content .dd-folder");
 
-    const isFolderMatch = folderTitle.includes(filter);
-    const isSubfolderMatch = Array.from(subfolders).some(subfolder =>
-        subfolder.querySelector(".folder-title").textContent.toLowerCase().includes(filter)
-    );
+    folders.forEach(folder => {
+        const title = folder.querySelector(".folder-title").textContent.toLowerCase();
+        const subfolders = folder.querySelectorAll(".dd-folder");
+        
+        const isVisible = title.includes(filter) || Array.from(subfolders).some(subfolder =>
+            subfolder.querySelector(".folder-title").textContent.toLowerCase().includes(filter)
+        );
 
-    const isItemMatch = Array.from(journalItems).some(item =>
-        item.textContent.toLowerCase().includes(filter)
-    );
+        folder.style.display = isVisible ? "" : "none";
 
-    return isFolderMatch || isSubfolderMatch || isItemMatch;
+        const folderEntries = folder.querySelectorAll(".journalitem");
+        folderEntries.forEach(entry => {
+            entry.style.display = isVisible ? "" : "none";
+        });
+    });
+}
+
+function searchEntries(filter) {
+    const entries = document.querySelectorAll("#journal .content .journalitem");
+    const folders = document.querySelectorAll("#journal .content .dd-folder");
+
+    entries.forEach(entry => {
+        entry.style.display = entry.textContent.toLowerCase().includes(filter) ? "" : "none";
+    });
+
+    folders.forEach(folder => {
+        const visibleEntries = folder.querySelectorAll(".journalitem:not([style*='display: none'])");
+        folder.style.display = visibleEntries.length > 0 ? "" : "none";
+    });
 }
 
 function filterEntries() {
     const filter = document.getElementById("journalSearch").value.toLowerCase();
-    const entries = document.querySelectorAll("#journal .content .journalitem");
-    const folders = document.querySelectorAll("#journal .content .dd-folder");
-
+    
     if (searchByFolder) {
-        folders.forEach(folder => {
-            const title = folder.querySelector(".folder-title").textContent.toLowerCase();
-            const subfolders = folder.querySelectorAll(".dd-folder");
-
-            const isVisible = title.includes(filter) || Array.from(subfolders).some(subfolder => subfolder.querySelector(".folder-title").textContent.toLowerCase().includes(filter));
-            folder.style.display = isVisible ? "" : "none";
-
-            const folderEntries = folder.querySelectorAll(".journalitem");
-            folderEntries.forEach(entry => {
-                entry.style.display = isVisible ? "" : "none";
-            });
-        });
+        searchFolders(filter);
     } else {
-        entries.forEach(entry => {
-            entry.style.display = entry.textContent.toLowerCase().includes(filter) ? "" : "none";
-        });
-
-        folders.forEach(folder => {
-            const visibleEntries = folder.querySelectorAll(".journalitem:not([style*='display: none'])");
-            folder.style.display = visibleEntries.length > 0 ? "" : "none";
-        });
+        searchEntries(filter);
     }
 }
 
