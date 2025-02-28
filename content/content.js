@@ -30,9 +30,9 @@ function createSearchBox() {
 function createModeSwitch() {
     const modeSwitchWrapper = document.createElement("div");
     modeSwitchWrapper.style.margin = "5px 0";
+    modeSwitchWrapper.style.marginLeft = "10px";
 
     const label = document.createElement("label");
-    label.textContent = "Search by Folder:";
     label.style.marginRight = "10px";
 
     const modeSwitch = document.createElement("input");
@@ -42,7 +42,6 @@ function createModeSwitch() {
     
     const modeText = document.createElement("span");
     modeText.id = "modeText";
-    modeText.textContent = "Item Search";
 
     modeSwitch.addEventListener("change", () => toggleSearchMode(modeSwitch.checked));
 
@@ -102,14 +101,11 @@ function filterEntries() {
 function toggleSearchMode(isFolderSearch) {
     searchByFolder = isFolderSearch;
     const searchBox = document.getElementById("journalSearch");
-    const modeText = document.getElementById("modeText");
 
     if (searchByFolder) {
         searchBox.placeholder = "Search for folder...";
-        modeText.textContent = "Folder Search";
     } else {
         searchBox.placeholder = "Search for item...";
-        modeText.textContent = "Item Search";
     }
 
     filterEntries();
@@ -120,8 +116,12 @@ function addSearchBox() {
         if (!document.getElementById("journalSearch")) {
             const searchBox = createSearchBox();
             const modeSwitch = createModeSwitch();
-            creationControls.parentNode.insertBefore(searchBox, creationControls);
-            creationControls.parentNode.insertBefore(modeSwitch, searchBox.nextSibling);
+            const container = document.createElement("div");
+            container.style.display = "flex";
+            container.style.alignItems = "center";
+            container.appendChild(searchBox);
+            container.appendChild(modeSwitch);
+            creationControls.parentNode.insertBefore(container, creationControls);
             searchBox.addEventListener("keyup", filterEntries);
         }
     });
