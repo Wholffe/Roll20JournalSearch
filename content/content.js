@@ -58,19 +58,39 @@ function searchFolders(filter) {
     const folders = document.querySelectorAll("#journal .content .dd-folder");
 
     folders.forEach(folder => {
-        const title = folder.querySelector(".folder-title").textContent.toLowerCase();
-        const subfolders = folder.querySelectorAll(".dd-folder");
+        const titleElement = folder.querySelector(".folder-title");
+        if (!titleElement) return;
         
-        const isVisible = title.includes(filter) || Array.from(subfolders).some(subfolder =>
-            subfolder.querySelector(".folder-title").textContent.toLowerCase().includes(filter)
-        );
+        const title = titleElement.textContent.toLowerCase();
 
-        folder.style.display = isVisible ? "" : "none";
+        if (title.includes(filter)) {
+            console.log(`found folder: ${titleElement.textContent}`);
+            folder.style.display = "";
+            printSubfoldersAndItems(folder, "  ");
+        }
+    });
+}
 
-        const folderEntries = folder.querySelectorAll(".journalitem");
-        folderEntries.forEach(entry => {
-            entry.style.display = isVisible ? "" : "none";
-        });
+function printSubfoldersAndItems(folder, indent) {
+    const subfolders = folder.querySelectorAll(":scope > .dd-list > .dd-folder");
+
+    subfolders.forEach(subfolder => {
+        const subfolderTitle = subfolder.querySelector(".folder-title");
+        if (subfolderTitle) {
+            console.log(`${indent}├─ folder: ${subfolderTitle.textContent}`);
+            subfolder.style.display = "";
+            printSubfoldersAndItems(subfolder, indent + "  ");
+        }
+    });
+
+    const items = folder.querySelectorAll(":scope > .dd-list > .journalitem");
+
+    items.forEach(item => {
+        const itemTitle = item.querySelector(".namecontainer");
+        if (itemTitle) {
+            console.log(`${indent}└─ Item: ${itemTitle.textContent}`);
+            item.style.display = "";
+        }
     });
 }
 
@@ -92,6 +112,7 @@ function filterEntries() {
     const filter = document.getElementById("journalSearch").value.toLowerCase();
     
     if (searchByFolder) {
+        searchEntries(filter);
         searchFolders(filter);
     } else {
         searchEntries(filter);
