@@ -60,15 +60,24 @@ function searchFolders(filter) {
     folders.forEach(folder => {
         const titleElement = folder.querySelector(".folder-title");
         if (!titleElement) return;
-        
+
         const title = titleElement.textContent.toLowerCase();
 
         if (title.includes(filter)) {
             console.log(`found folder: ${titleElement.textContent}`);
             folder.style.display = "";
             printSubfoldersAndItems(folder, "  ");
+            showParentFolder(folder);
         }
     });
+}
+
+function showParentFolder(folder) {
+    let parentFolder = folder.parentElement.closest(".dd-folder");
+    while (parentFolder) {
+        parentFolder.style.display = "";
+        parentFolder = parentFolder.parentElement.closest(".dd-folder");
+    }
 }
 
 function printSubfoldersAndItems(folder, indent) {
