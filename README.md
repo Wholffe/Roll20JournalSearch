@@ -15,7 +15,7 @@ This browser extension adds a search bar to the Roll20 journal, allowing you to 
 You can type in the search box to filter entries in real-time. The mode switch allows you to toggle between two search modes:
 
 - **Entry Search**: Filters individual journal entries (characters, handouts, notes) based on the search term. Only entries that match the search term will be displayed, and folders containing no matching entries will be hidden.
-- **Folder Search**: Filters folders based on the search term. Folders that match the search term will be displayed along with their contents, and all parent folders will be shown to maintain the folder hierarchy.
+- **Search by Item, Including Folders**: Filters both individual entries and folders based on the search term. Folders that match the search term will be displayed along with their contents, and all parent folders will be shown to maintain the folder hierarchy. This is the default mode and should fit most use cases unless there are certain folders named like items.
 
 ## Installation
 1. Download the ZIP file from the [latest release](https://github.com/Wholffe/Roll20JournalSearch/releases).

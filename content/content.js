@@ -24,35 +24,29 @@ function createSearchBox() {
     searchBox.style.border = "1px solid #ccc";
     searchBox.style.borderRadius = "4px";
     searchBox.style.fontSize = "14px";
+    
     return searchBox;
 }
 
 function createModeSwitch() {
     const modeSwitchWrapper = document.createElement("div");
-    modeSwitchWrapper.style.margin = "5px 0";
-    modeSwitchWrapper.style.marginLeft = "10px";
+    modeSwitchWrapper.style.margin = "5px";
 
     const label = document.createElement("label");
     label.style.marginRight = "10px";
 
     const modeSwitch = document.createElement("input");
     modeSwitch.type = "checkbox";
-    modeSwitch.id = "searchModeSwitch";
+    modeSwitch.id = "journalSearchModeSwitch";
     modeSwitch.style.marginRight = "5px";
-    
-    const modeText = document.createElement("span");
-    modeText.id = "modeText";
 
     modeSwitch.addEventListener("change", () => toggleSearchMode(modeSwitch.checked));
 
     modeSwitchWrapper.appendChild(label);
     modeSwitchWrapper.appendChild(modeSwitch);
-    modeSwitchWrapper.appendChild(modeText);
 
     return modeSwitchWrapper;
 }
-
-let searchByFolder = false;
 
 function searchFolders(filter) {
     const folders = document.querySelectorAll("#journal .content .dd-folder");
@@ -62,14 +56,18 @@ function searchFolders(filter) {
         if (!titleElement) return;
 
         const title = titleElement.textContent.toLowerCase();
-
-        if (title.includes(filter)) {
-            console.log(`found folder: ${titleElement.textContent}`);
-            folder.style.display = "";
-            printAndShowSubfoldersAndItems(folder, "  ");
-            showParentFolder(folder);
+        const matches = title.includes(filter);
+        
+        if (matches) {
+            showFullFolderHierarchy(folder);
         }
     });
+}
+
+function showFullFolderHierarchy(folder) {
+    folder.style.display = "";
+    showParentFolder(folder);
+    showFolderContentsRecursive(folder);
 }
 
 function showParentFolder(folder) {
@@ -80,27 +78,13 @@ function showParentFolder(folder) {
     }
 }
 
-function printAndShowSubfoldersAndItems(folder, indent) {
+function showFolderContentsRecursive(folder) {
+    folder.style.display = "";
     const subfolders = folder.querySelectorAll(":scope > .dd-list > .dd-folder");
-
-    subfolders.forEach(subfolder => {
-        const subfolderTitle = subfolder.querySelector(".folder-title");
-        if (subfolderTitle) {
-            console.log(`${indent}├─ folder: ${subfolderTitle.textContent}`);
-            subfolder.style.display = "";
-            printAndShowSubfoldersAndItems(subfolder, indent + "  ");
-        }
-    });
+    subfolders.forEach(subfolder => showFolderContentsRecursive(subfolder));
 
     const items = folder.querySelectorAll(":scope > .dd-list > .journalitem");
-
-    items.forEach(item => {
-        const itemTitle = item.querySelector(".namecontainer");
-        if (itemTitle) {
-            console.log(`${indent}└─ Item: ${itemTitle.textContent}`);
-            item.style.display = "";
-        }
-    });
+    items.forEach(item => item.style.display = "");
 }
 
 function searchEntries(filter) {
@@ -120,24 +104,18 @@ function searchEntries(filter) {
 function filterEntries() {
     const filter = document.getElementById("journalSearch").value.toLowerCase();
     
+    searchEntries(filter);
     if (searchByFolder) {
-        searchEntries(filter);
         searchFolders(filter);
-    } else {
-        searchEntries(filter);
     }
 }
 
 function toggleSearchMode(isFolderSearch) {
     searchByFolder = isFolderSearch;
     const searchBox = document.getElementById("journalSearch");
-
-    if (searchByFolder) {
-        searchBox.placeholder = "Search for folder...";
-    } else {
-        searchBox.placeholder = "Search for item...";
-    }
-
+    const modeSwitch = document.getElementById("journalSearchModeSwitch");
+    modeSwitch.checked = searchByFolder;
+    searchBox.placeholder = searchByFolder ? "Search for item, including folders..." : "Search for item...";
     filterEntries();
 }
 
@@ -146,13 +124,17 @@ function addSearchBox() {
         if (!document.getElementById("journalSearch")) {
             const searchBox = createSearchBox();
             const modeSwitch = createModeSwitch();
+            
             const container = document.createElement("div");
             container.style.display = "flex";
             container.style.alignItems = "center";
             container.appendChild(searchBox);
             container.appendChild(modeSwitch);
+            
             creationControls.parentNode.insertBefore(container, creationControls);
             searchBox.addEventListener("keyup", filterEntries);
+
+            toggleSearchMode(true);
         }
     });
 }
@@ -167,6 +149,8 @@ function observeDOMChanges() {
     const observer = new MutationObserver(() => addSearchBox());
     observer.observe(document.body, { childList: true, subtree: true });
 }
+
+let searchByFolder = false;
 
 observeJournalTab();
 observeDOMChanges();
