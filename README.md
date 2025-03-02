@@ -3,9 +3,19 @@
 This browser extension adds a search bar to the Roll20 journal, allowing you to quickly find characters, handouts, and notes by filtering entries in real-time and hiding empty folders. It works automatically when you load Roll20.
 
 <div style="display: flex;">
-  <img src="assets/searchBarDarkEmpty.png" alt="Search Bar Dark Empty" />
-  <img src="assets/searchBarDarkFilled.png" alt="Search Bar Dark Filled" />
+  <img src="assets/searchBarDarkEmptyEntitySearch.png" alt="Search Bar Dark Empty Entity Search" />
+  <img src="assets/searchBarDarkEmptyFolderSearch.png" alt="Search Bar Dark Empty Folder Search" />
+
+  <img src="assets/searchBarDarkFilledEntitySearch.png" alt="Search Bar Dark Filled Entity Search" />
+  <img src="assets/searchBarDarkFilledFolderSearch.png" alt="Search Bar Dark Filled Folder Search" />
 </div>
+
+## How It Works
+
+You can type in the search box to filter entries in real-time. The mode switch allows you to toggle between two search modes:
+
+- **Entry Search**: Filters individual journal entries (characters, handouts, notes) based on the search term. Only entries that match the search term will be displayed, and folders containing no matching entries will be hidden.
+- **Folder Search**: Filters folders based on the search term. Folders that match the search term will be displayed along with their contents, and all parent folders will be shown to maintain the folder hierarchy.
 
 ## Installation
 1. Download the ZIP file from the [latest release](https://github.com/Wholffe/Roll20JournalSearch/releases).

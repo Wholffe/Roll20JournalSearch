@@ -66,7 +66,7 @@ function searchFolders(filter) {
         if (title.includes(filter)) {
             console.log(`found folder: ${titleElement.textContent}`);
             folder.style.display = "";
-            printSubfoldersAndItems(folder, "  ");
+            printAndShowSubfoldersAndItems(folder, "  ");
             showParentFolder(folder);
         }
     });
@@ -80,7 +80,7 @@ function showParentFolder(folder) {
     }
 }
 
-function printSubfoldersAndItems(folder, indent) {
+function printAndShowSubfoldersAndItems(folder, indent) {
     const subfolders = folder.querySelectorAll(":scope > .dd-list > .dd-folder");
 
     subfolders.forEach(subfolder => {
@@ -88,7 +88,7 @@ function printSubfoldersAndItems(folder, indent) {
         if (subfolderTitle) {
             console.log(`${indent}├─ folder: ${subfolderTitle.textContent}`);
             subfolder.style.display = "";
-            printSubfoldersAndItems(subfolder, indent + "  ");
+            printAndShowSubfoldersAndItems(subfolder, indent + "  ");
         }
     });
 
