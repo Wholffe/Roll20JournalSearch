@@ -21,7 +21,7 @@ You can type in the search box to filter entries in real-time. The mode switch a
 1. Download the ZIP file from the [latest release](https://github.com/Wholffe/Roll20JournalSearch/releases).
 2. Extract the ZIP file.
 
-### Google Chrome
+### Chromium-Based Browsers (e.g. Google Chrome, Brave, Opera GX)
 3. Open `chrome://extensions/`
 4. Enable **Developer mode**
 5. Click **"Load unpacked"**
